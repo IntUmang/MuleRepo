@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:tls="http://www.mulesoft.org/schema/mule/tls" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="c1993bed-081e-4f65-98ba-e112b89c0110" >
+		<http:listener-connection protocol="HTTPS" host="0.0.0.0" port="${https.port}" >
+			<tls:context >
+				<tls:key-store type="jks" path="keystore.jks" alias="mule" keyPassword="password" password="password" />
+			</tls:context>
+		</http:listener-connection>
+	</http:listener-config>
+	<configuration-properties doc:name="Configuration properties" doc:id="2326531a-1c99-4763-ba8e-41c5de73c800" file="config.yaml" />
+	<flow name="httpsFlow" doc:id="a7f15dfb-1012-448a-9aca-738868adb227" >
+		<http:listener doc:name="Listener" doc:id="d4e4343f-2e18-41ea-accc-37f03f7ea7b8" config-ref="HTTP_Listener_config" path="/test"/>
+		<set-payload value='#[output application/json&#10;---&#10;{&#10;	"message" : "server created"&#10;}]' doc:name="Set Payload" doc:id="79bf0d91-96f5-4cad-9e47-2d498214fb24" />
+	</flow>
+</mule>
